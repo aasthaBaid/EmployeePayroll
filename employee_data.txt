@@ -1,0 +1,1 @@
+Employee [empId=EMP2004, phone=1234567890, username=abaid, email=aastha@gmail.com, account=null]
