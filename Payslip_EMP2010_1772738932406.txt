@@ -1,0 +1,5 @@
+PAYSLIP
+Employee ID  : EMP2010
+Employee Name: maya
+Month        : mar
+Net Pay      : 80160.00
