@@ -11,19 +11,23 @@ import com.auth.User;
 import com.employee.Employee;
 import com.employee.UserAccount;
 import com.exception.ValidationException;
+import payslip.PayrollService;
+import payslip.Payslip;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, ValidationException {
         Scanner sc = new Scanner(System.in);
-        AuthService authService = new AuthService(); // shared instance
+        AuthService authService = new AuthService(); // single shared instance
+        PayrollService payrollService = new PayrollService(); // UC3 service
 
         int option = 0;
-        while (option != 3) {
+        while (option != 4) {
             System.out.println("\nChoose option:");
             System.out.println("1. Register");
             System.out.println("2. Login");
-            System.out.println("3. Exit");
+            System.out.println("3. Generate Payslip (UC3)");
+            System.out.println("4. Exit");
             System.out.print("Enter choice: ");
 
             String input = sc.nextLine();
@@ -63,7 +67,6 @@ public class Main {
                 employee.persist();
                 account.persist();
 
-                // Register with AuthService
                 User user = new RegularEmployee(username, hashed);
                 authService.registerUser(user);
 
@@ -84,13 +87,53 @@ public class Main {
                 Session session = authService.login(username, password);
                 if (session != null && session.isActive()) {
                     System.out.println("Login successful!");
+                    System.out.println("User type: " + session.getUser().getClass().getSimpleName());
                     session.getUser().showDashboard();
                 } else {
                     System.out.println("Login failed or session inactive.");
                 }
 
             } else if (option == 3) {
+                System.out.println("\n--- PAYSLIP GENERATION ---");
+
+                System.out.print("Enter Employee ID (EMP-XXXX): ");
+                String empId = sc.nextLine();
+
+                System.out.print("Enter Name: ");
+                String name = sc.nextLine();
+
+                System.out.print("Enter Email: ");
+                String email = sc.nextLine();
+
+                System.out.print("Enter Phone: ");
+                String phone = sc.nextLine();
+
+                System.out.print("Enter Username: ");
+                String username = sc.nextLine();
+
+                Employee employee = new Employee(empId, name, phone, username, email);
+
+                System.out.print("Enter Month: ");
+                String month = sc.nextLine();
+
+                System.out.print("Enter Basic Salary: ");
+                double basic = Double.parseDouble(sc.nextLine());
+
+                System.out.print("Enter HRA: ");
+                double hra = Double.parseDouble(sc.nextLine());
+
+                System.out.print("Enter DA: ");
+                double da = Double.parseDouble(sc.nextLine());
+
+                System.out.print("Enter Allowances: ");
+                double allowances = Double.parseDouble(sc.nextLine());
+
+                Payslip payslip = payrollService.generatePayslip(employee, month, basic, hra, da, allowances);
+                System.out.println(payslip);
+
+            } else if (option == 4) {
                 System.out.println("Exiting... Goodbye!");
+                return;
             } else {
                 System.out.println("Invalid choice! Try again.");
             }
