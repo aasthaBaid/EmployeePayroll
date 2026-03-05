@@ -1,1 +1,2 @@
-Employee [empId=EMP2004, phone=1234567890, username=abaid, email=aastha@gmail.com, account=null]
+Employee [empId=EMP1000, phone=9089786756, username=seven11, email=seven@gmail, account=null]
+Employee [empId=EMP2010, phone=5678904321, username=maya, email=maya@gmail, account=null]
